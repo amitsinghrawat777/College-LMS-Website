@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+DESIGN.md
+DESIGN-hashicorp.md
+CONTRIBUTING.md
+CONTRIBUTING-hashicorp.md
+contribute.md

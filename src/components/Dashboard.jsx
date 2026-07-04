@@ -30,9 +30,6 @@ export default function Dashboard({ contests, setCurrentPage, setActiveContestId
           <button 
             className="streak-pill" 
             onClick={handleStreakClick} 
-            style={{ cursor: 'pointer', border: 'none', transition: 'transform 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             <Flame size={18} fill="currentColor" />
             <span>DAILY STREAK: {streak} DAYS</span>
@@ -74,7 +71,7 @@ export default function Dashboard({ contests, setCurrentPage, setActiveContestId
       </div>
 
       {/* Quick Overview Grid Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', marginTop: '8px' }}>
+      <div className="dashboard-widgets-grid">
         
         {/* Last Contest Results Widget */}
         <div className="glass-card widget-card">
@@ -83,23 +80,13 @@ export default function Dashboard({ contests, setCurrentPage, setActiveContestId
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>{lastContest.title}</span>
-                <span className="contest-tag easy" style={{ backgroundColor: 'var(--success-light)', color: 'var(--success)', padding: '2px 8px', fontSize: '0.7rem', fontWeight: '700' }}>
+                <span className="contest-tag easy">
                   {lastContest.performanceBadge || lastContest.difficulty || 'Completed'}
                 </span>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', marginTop: '-6px' }}>{lastContest.subject}</p>
               
-              <div 
-                style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center', 
-                  backgroundColor: 'var(--bg-tertiary)', 
-                  padding: '12px', 
-                  borderRadius: '12px',
-                  marginTop: '4px' 
-                }}
-              >
+              <div className="widget-inner-row">
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Obtained Score</span>
                 <span style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--success)' }}>{lastContest.score}</span>
               </div>
@@ -127,8 +114,8 @@ export default function Dashboard({ contests, setCurrentPage, setActiveContestId
                 <span>97.2%</span>
               </div>
               {/* ProgressBar */}
-              <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--border-color)', borderRadius: '3px', overflow: 'hidden' }}>
-                <div style={{ width: '97.2%', height: '100%', backgroundColor: 'var(--primary)', borderRadius: '3px' }} />
+              <div className="progress-bar-container">
+                <div className="progress-bar-fill" style={{ width: '97.2%' }} />
               </div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', textAlign: 'center', marginTop: '4px' }}>
                 Ranked in Top 3% among {totalStudents} CSE students

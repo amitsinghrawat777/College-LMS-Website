@@ -202,6 +202,8 @@ export default function App() {
         toggleTheme={toggleTheme}
         setMobileOpen={setMobileOpen}
         triggerNotification={triggerNotification}
+        sidebarCollapsed={sidebarCollapsed}
+        setSidebarCollapsed={setSidebarCollapsed}
       />
 
       <div style={{ display: 'flex', width: '100%', flex: 1, minHeight: 'calc(100vh - var(--header-height))' }}>

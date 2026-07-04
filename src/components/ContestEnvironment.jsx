@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, Clock, HelpCircle, ArrowLeft, ArrowRight, Save, CheckCircle, ShieldAlert, Award, FileText } from 'lucide-react';
 import { contestsData } from '../data/mockData';
 
-export default function ContestEnvironment({ 
+export default function ContestEnvironment({
   contests,
   setContests,
-  activeContestId, 
-  setCurrentPage, 
-  setSubmissionDetails, 
-  triggerNotification 
+  activeContestId,
+  setCurrentPage,
+  setSubmissionDetails,
+  triggerNotification
 }) {
   const contest = contests.find(c => c.id === activeContestId) || contests[0];
   const { questions } = contest;
@@ -18,7 +18,7 @@ export default function ContestEnvironment({
   const [tempAnswers, setTempAnswers] = useState({}); // Stores selection state before "Save"
   const [savedAnswers, setSavedAnswers] = useState({}); // Stores saved/locked answers (Green status)
   const [markedForReview, setMarkedForReview] = useState({}); // Stores review markers (Yellow status)
-  
+
   // Violations & UFM State
   const [violationCount, setViolationCount] = useState(0);
   const [violationLogs, setViolationLogs] = useState([]);
@@ -65,7 +65,7 @@ export default function ContestEnvironment({
     // Watch for manual fullscreen exits
     const handleFullscreenChange = () => {
       if (!sessionActiveRef.current) return;
-      
+
       // If we exit fullscreen and are not currently showing warning or disqualified, trigger violation
       if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
         if (!showWarningModal && !isDisqualified) {
@@ -279,18 +279,18 @@ export default function ContestEnvironment({
           <p className="dq-text">
             This examination has been terminated due to multiple Unfair Means (UFM) violations.
           </p>
-          <div style={{ textAlign: 'left', backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '16px', borderRadius: '12px', marginBottom: '24px' }}>
-            <span style={{ fontWeight: '700', fontSize: '0.85rem', color: '#ff6b6b', display: 'block', marginBottom: '8px' }}>
+          <div className="violation-logs-box">
+            <span className="violation-logs-title">
               VIOLATION LOGS:
             </span>
-            <ul style={{ paddingLeft: '20px', fontSize: '0.8rem', color: '#cbd5e1' }}>
+            <ul className="violation-logs-list">
               {violationLogs.map((log, idx) => (
-                <li key={idx} style={{ marginBottom: '4px' }}>{log}</li>
+                <li key={idx} className="violation-logs-item">{log}</li>
               ))}
             </ul>
           </div>
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             style={{ width: '100%' }}
             onClick={() => setCurrentPage('dashboard')}
           >
@@ -348,7 +348,7 @@ export default function ContestEnvironment({
                 {activeQuestion.options.map((option, optIdx) => {
                   const isSelected = currentTempSelection === optIdx;
                   return (
-                    <div 
+                    <div
                       key={optIdx}
                       className={`option-item ${isSelected ? 'selected' : ''}`}
                       onClick={() => selectOption(optIdx)}
@@ -366,17 +366,17 @@ export default function ContestEnvironment({
             {/* Actions footer */}
             <div className="env-actions-row">
               <div className="action-left-group">
-                <button 
-                  className="btn btn-outline" 
+                <button
+                  className="btn btn-outline"
                   disabled={currentQIndex === 0}
                   onClick={handlePrev}
                 >
                   <ArrowLeft size={16} />
                   <span>Previous</span>
                 </button>
-                
-                <button 
-                  className="btn btn-outline" 
+
+                <button
+                  className="btn btn-outline"
                   disabled={currentQIndex === questions.length - 1}
                   onClick={handleNext}
                 >
@@ -386,26 +386,23 @@ export default function ContestEnvironment({
               </div>
 
               <div style={{ display: 'flex', gap: '12px' }}>
-                <button 
-                  className={`btn ${isQuestionMarked ? 'btn-primary' : 'btn-outline'}`}
-                  style={{ borderColor: 'var(--warning)', color: isQuestionMarked ? 'white' : 'var(--warning)', backgroundColor: isQuestionMarked ? 'var(--warning)' : 'transparent' }}
+                <button
+                  className={`btn btn-warning ${isQuestionMarked ? 'active-state' : ''}`}
                   onClick={handleMarkReview}
                 >
                   <span>Mark for Review</span>
                 </button>
 
-                <button 
-                  className="btn btn-outline"
-                  style={{ borderColor: 'var(--success)', color: 'var(--success)' }}
+                <button
+                  className="btn btn-success"
                   onClick={handleSaveAnswer}
                 >
                   <Save size={16} />
                   <span>Save Answer</span>
                 </button>
 
-                <button 
-                  className="btn btn-primary"
-                  style={{ backgroundColor: 'var(--danger)', color: 'white' }}
+                <button
+                  className="btn btn-danger"
                   onClick={() => setShowSubmitConfirm(true)}
                 >
                   <span>Submit Contest</span>
@@ -424,14 +421,14 @@ export default function ContestEnvironment({
                 const isAnswered = savedAnswers[idx] !== undefined;
                 const isMarked = markedForReview[idx] === true;
                 const isCurrent = currentQIndex === idx;
-                
+
                 let btnClass = '';
                 if (isAnswered) btnClass = 'answered';
                 else if (isMarked) btnClass = 'marked';
                 if (isCurrent) btnClass += ' current-select';
 
                 return (
-                  <button 
+                  <button
                     key={idx}
                     className={`q-grid-btn ${btnClass}`}
                     onClick={() => setCurrentQIndex(idx)}
@@ -489,8 +486,8 @@ export default function ContestEnvironment({
               <br /><br />
               Please return to full-screen mode immediately. If you trigger another violation, your exam will be terminated immediately.
             </p>
-            <button 
-              className="btn btn-primary animate-pulse" 
+            <button
+              className="btn btn-primary animate-pulse"
               style={{ width: '100%' }}
               onClick={resumeExam}
             >
@@ -511,15 +508,15 @@ export default function ContestEnvironment({
               Once submitted, you cannot review your answers.
             </p>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button 
-                className="btn btn-outline" 
+              <button
+                className="btn btn-outline"
                 style={{ flex: 1 }}
                 onClick={() => setShowSubmitConfirm(false)}
               >
                 Cancel
               </button>
-              <button 
-                className="btn btn-primary" 
+              <button
+                className="btn btn-primary"
                 style={{ flex: 1.5 }}
                 onClick={() => handleSubmitContest(false)}
               >
